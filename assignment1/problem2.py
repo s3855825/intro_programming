@@ -11,18 +11,15 @@ def calculate_fractions(numbers):
     return fractions
 
 
-def move_mouse_position(position_x, position_y):
-    turtle.penup()
-    turtle.goto(position_x, position_y)
-    turtle.pendown()
-
-
 def draw_arc(color, fraction, radius):
     turtle.fillcolor(color[0], color[1], color[2])
     turtle.begin_fill()
     turtle.circle(radius, round(fraction*360, 1))
-    move_mouse_position(0, 0)
+    position = turtle.position()  # get current point on the chart circumference to resume on next loop
+    turtle.goto(0, 0)
     turtle.end_fill()
+    # after finishing a "fraction" of the pie chart, return to the circumference to draw another fraction
+    turtle.setposition(position)
 
 
 def draw_pie_chart(numbers, radius=200):
@@ -30,16 +27,13 @@ def draw_pie_chart(numbers, radius=200):
     turtle.speed(10)
     turtle.getscreen().colormode(255)
 
-    # draw circle and first arm
-    move_mouse_position(0, -radius)
-    turtle.circle(radius)
-    move_mouse_position(0, 0)
-    turtle.forward(radius)
+    # move start position down, since turtle draw upward
+    # move_mouse_position(0, -radius)
+    turtle.goto(0, -radius)
 
     # draw arcs
     fractions = calculate_fractions(numbers)
     for i in fractions:
-        move_mouse_position(0, 0)
         random_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         draw_arc(random_color, i, radius)
     turtle.exitonclick()
