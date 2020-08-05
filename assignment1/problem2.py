@@ -6,7 +6,7 @@ def calculate_fractions(numbers):
     total = sum(numbers)
     fractions = []
     for i in numbers:
-        fractions.append(round(i/total, 3))
+        fractions.append(round(i / total, 3))
     print(fractions)
     return fractions
 
@@ -14,7 +14,7 @@ def calculate_fractions(numbers):
 def draw_arc(color, fraction, radius):
     turtle.fillcolor(color[0], color[1], color[2])
     turtle.begin_fill()
-    turtle.circle(radius, round(fraction*360, 1))
+    turtle.circle(radius, round(fraction * 360, 1))
     position = turtle.position()  # get current point on the chart circumference to resume on next loop
     turtle.goto(0, 0)
     turtle.end_fill()
@@ -39,5 +39,17 @@ def draw_pie_chart(numbers, radius=200):
     turtle.exitonclick()
 
 
-numbers = [247.39, 260.4, 171.83, 51.96]
-draw_pie_chart(numbers)
+def problem2():
+    # numbers = [247.39, 260.4, 171.83, 51.96]
+    numbers = []
+    user_input = input("Please enter a number to add to the list, or 'q' to stop: ")
+    while user_input != 'q' and user_input.isnumeric():
+        if user_input != 'q':
+            numbers.append(float(user_input))
+        user_input = input("Please enter the next number to add to the list, or 'q' to stop: ")
+
+    print(numbers)
+    draw_pie_chart(numbers)
+
+
+problem2()
