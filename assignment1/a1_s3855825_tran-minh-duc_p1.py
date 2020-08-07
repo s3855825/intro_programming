@@ -38,39 +38,76 @@ def draw_blue_background(width, height):
 
 
 def draw_diagonal(width, height, color, left=True):
+    turtle.pencolor(color)
     turtle.fillcolor(color)
     turtle.begin_fill()
 
-    diagonal_w = 0.2 * width
-    diagonal_h = round(0.13 * height)
     coefficient = pow(-1, int(left))  # switch coordinates between left and right diagonals
 
-    # left diagonal
+    # calculate turning points' coordinates
+    if color == "red":
+        diagonal_w = round(2/30 * width)
+        diagonal_h = round(2/15 * height)
+    else:
+        diagonal_w = round(3/30 * width)
+        diagonal_h = round(3/15 * height)
+
     turtle.penup()
     turtle.goto(coefficient * width, height)
     turtle.pendown()
+    turtle.setheading(0)  # reset current turtle angle, make sure turtle is heading in guided direction
     if not left:
-        turtle.left(-90)
+        turtle.left(180)
     turtle.forward(diagonal_w)
     turtle.goto(-coefficient * width, -height + diagonal_h)
     turtle.goto(-coefficient * width, -height)
     turtle.goto(-coefficient * (width - diagonal_w), -height)
     turtle.goto(coefficient * width, height - diagonal_h)
-    turtle.right(90)
+    if left:
+        turtle.left(90)
+    else:
+        turtle.right(90)
     turtle.forward(diagonal_h)
-    turtle.penup()
     turtle.end_fill()
-
-
-def draw_horizontal_stripe(width, height, color):
     turtle.penup()
-    turtle.goto()
+
+
+def draw_stripe(width, height, color, orientation):
+    turtle.pencolor(color)
+    if color == "red":
+        stripe_width = 6/30 * width
+    else:
+        stripe_width = 10/30 * width
+
+    turtle.fillcolor(color)
+
+    turtle.begin_fill()
+    turtle.penup()
+    if orientation == "vertical":
+        if color == "white":
+            turtle.goto(-5/30*width, height)
+        else:
+            turtle.goto(-3 / 30 * width, height)
+    else:
+        if color == "white":
+            turtle.goto(-width, 5/30*height)
+        else:
+            turtle.goto(-width, 5/30*height)
     turtle.pendown()
-
-
-def draw_vertical_stripe(width, height, color):
-    # TODO
-    return
+    turtle.setheading(0)
+    for i in range(4):
+        if i % 2 == 0:
+            if orientation == "vertical":
+                turtle.forward(stripe_width)
+            else:
+                turtle.forward(width*2)
+        else:
+            if orientation == "vertical":
+                turtle.forward(height*2)
+            else:
+                turtle.forward(stripe_width)
+        turtle.right(90)
+    turtle.end_fill()
 
 
 def draw_stars(size, offset=(0, 0)):
@@ -87,20 +124,23 @@ def draw_union_jack(width=300, height=150):
     turtle.getscreen().colormode(255)
 
     # draw blue background
-    draw_blue_background(width * 2, height * 2)
+    draw_blue_background(width, height)
 
     # draw white diagonals
-    # TODO
+    draw_diagonal(width=width, height=height, color="white", left=True)
+    draw_diagonal(width=width, height=height, color="white", left=False)
 
     # draw red diagonals
     draw_diagonal(width=width, height=height, color="red", left=True)
     draw_diagonal(width=width, height=height, color="red", left=False)
 
     # draw white vertical and horizontal stripes
-    # TODO
+    draw_stripe(width=width, height=height * 2, color="white", orientation="vertical")
+    draw_stripe(width=width, height=height * 2, color="white", orientation="horizontal")
 
     # draw red vertical and horizontal stripes
-    # TODO
+    draw_stripe(width=width, height=height, color="red", orientation="vertical")
+    draw_stripe(width=width, height=height, color="red", orientation="horizontal")
 
     turtle.exitonclick()
 
