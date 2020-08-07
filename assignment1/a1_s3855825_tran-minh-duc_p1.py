@@ -4,11 +4,9 @@
 # Assignment: 1
 # Author: Tran Minh Duc (s3855825)
 # Created date: 23/07/2020
-# Last modified date: 05/08/2020
+# Last modified date: 07/08/2020
 
 import turtle
-import math
-from random import random
 
 
 def show_option():
@@ -46,11 +44,11 @@ def draw_diagonal(width, height, color, left=True):
 
     # calculate turning points' coordinates
     if color == "red":
-        diagonal_w = round(2/30 * width)
-        diagonal_h = round(2/15 * height)
+        diagonal_w = round(2 / 30 * width)
+        diagonal_h = round(2 / 15 * height)
     else:
-        diagonal_w = round(3/30 * width)
-        diagonal_h = round(3/15 * height)
+        diagonal_w = round(3 / 30 * width)
+        diagonal_h = round(3 / 15 * height)
 
     turtle.penup()
     turtle.goto(coefficient * width, height)
@@ -75,9 +73,9 @@ def draw_diagonal(width, height, color, left=True):
 def draw_stripe(width, height, color, orientation):
     turtle.pencolor(color)
     if color == "red":
-        stripe_width = 6/30 * width
+        stripe_width = 6 / 30 * width
     else:
-        stripe_width = 10/30 * width
+        stripe_width = 10 / 30 * width
 
     turtle.fillcolor(color)
 
@@ -85,14 +83,14 @@ def draw_stripe(width, height, color, orientation):
     turtle.penup()
     if orientation == "vertical":
         if color == "white":
-            turtle.goto(-5/30*width, height)
+            turtle.goto(-5 / 30 * width, height)
         else:
             turtle.goto(-3 / 30 * width, height)
     else:
         if color == "white":
-            turtle.goto(-width, 5/30*height)
+            turtle.goto(-width, 5 / 30 * height)
         else:
-            turtle.goto(-width, 5/30*height)
+            turtle.goto(-width, 5 / 30 * height)
     turtle.pendown()
     turtle.setheading(0)
     for i in range(4):
@@ -100,28 +98,47 @@ def draw_stripe(width, height, color, orientation):
             if orientation == "vertical":
                 turtle.forward(stripe_width)
             else:
-                turtle.forward(width*2)
+                turtle.forward(width * 2)
         else:
             if orientation == "vertical":
-                turtle.forward(height*2)
+                turtle.forward(height * 2)
             else:
                 turtle.forward(stripe_width)
         turtle.right(90)
     turtle.end_fill()
 
 
-def draw_stars(size, offset=(0, 0)):
-    # TODO
+def draw_stars(size, points, offset=(0, 0)):
+    """
+    Angle formula (regular heptagram): https://en.wikipedia.org/wiki/Heptagram
+    """
+    if points == 5:
+        angle = 180 - 36
+        coeff = 1  # make sure one vertex is on top
+    else:
+        coeff = -1  # make sure one vertex is on top
+        angle = 180 - 25.714
+
+    turtle.pencolor("red")
+    turtle.fillcolor("red")
+    turtle.begin_fill()
+    for i in range(points):
+        turtle.right(coeff * angle)
+        turtle.forward(size)
+    turtle.end_fill()
+    turtle.exitonclick()
     return
 
 
-def draw_union_jack(width=300, height=150):
+def draw_union_jack(width=300):
     """
     Draw the union jack on a canvas of size (width*2, height*2)
     Ratio taken from this image: https://i.stack.imgur.com/lHE1z.png
     """
     turtle.speed("fastest")
     turtle.getscreen().colormode(255)
+
+    height = round(width / 2)
 
     # draw blue background
     draw_blue_background(width, height)
@@ -145,13 +162,17 @@ def draw_union_jack(width=300, height=150):
     turtle.exitonclick()
 
 
-def draw_aussie(width=100, height=100):
+def draw_aussie(width=600):
     """
     Draw an Australian flag on a canvas of size (width*2, height*2)
     """
-    stars_position = []  # list of sizes and positions for 7 stars on the flag
+    height = round(width / 2)
+    # TODO: set positions of stars on flag
+    stars_position = []  # nested list of number of vertices, sizes and positions for stars on the flag
+
+    draw_blue_background(width, height)
     draw_union_jack()
-    # TODO
+    # TODO: shift union jack by offset
 
 
 def problem1():
@@ -176,4 +197,5 @@ def problem1():
         print('Program exits. Have a nice day!')
 
 
-problem1()
+# problem1()
+draw_stars(100, 7)
